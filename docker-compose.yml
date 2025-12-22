@@ -1,0 +1,15 @@
+name: "Max to TG bot"
+
+services:
+  bot:
+    container_name: max_to_tg_bot
+    build: .
+    restart: unless-stopped
+    environment:
+      BOT_TOKEN: ${BOT_TOKEN}
+      TG_ID: ${TG_ID}
+      API_URL: ${API_URL}
+      ID_INSTANCE: ${ID_INSTANCE}
+      API_TOKEN_INSTANCE: ${API_TOKEN_INSTANCE}
+      PHONE_NUMBER: ${PHONE_NUMBER}
+
