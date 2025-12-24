@@ -17,8 +17,6 @@ async def send_max_updates(bot: Bot):
             text = f"<b>{msg.chat_name} - {msg.sender_name}:</b>\n\n{msg.caption}"
 
             file_url = msg.file_url
-            print(file_url)
-
             if not file_url:
                 await bot.send_message(settings.tg_id, text + "<i>Файл не отправлен</i>")
                 logging.debug(f"File message without url: {text}")

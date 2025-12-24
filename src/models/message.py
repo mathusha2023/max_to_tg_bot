@@ -67,7 +67,7 @@ class MessageFactory:
                 sender_name=sender_data["senderName"],
                 chat_name=sender_data["chatName"],
                 caption=file_message["caption"],
-                file_type=file_type.from_str,
+                file_type=file_type,
                 file_url=file_message["downloadUrl"]
             )
         else:
