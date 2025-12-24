@@ -16,6 +16,11 @@ async def send_max_updates(bot: Bot):
         if isinstance(msg, FileMessageModel):
             text = f"<b>{msg.chat_name} - {msg.sender_name}:</b>\n\n{msg.caption}"
 
+            if not msg.file_url:
+                await bot.send_message(settings.tg_id, text)
+                logging.debug(f"File message without url: {text}")
+                continue
+
             if msg.file_type == FileType.IMAGE:
                 await bot.send_photo(settings.tg_id, msg.file_url, caption=text)
                 logging.debug(f"Image message sent: {text}\n{msg.file_url}")
