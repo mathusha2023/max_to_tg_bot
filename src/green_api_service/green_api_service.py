@@ -12,13 +12,30 @@ class GreenApiService:
     api_token_instance = settings.api_token_instance
 
     @classmethod
+    async def get_media_url(cls, chat_id, message_id):
+        async with aiohttp.ClientSession() as session:
+            url = f"{cls.api_url}/waInstance{cls.id_instance}/downloadFile/{cls.api_token_instance}"
+            body = {
+                "chatId": chat_id,
+                "idMessage": message_id
+            }
+            print(body)
+            async with session.post(url, data=body) as response:
+                if response.status != 200:
+                    print(response)
+                    raise
+                res =  await response.json()
+                logging.debug(res)
+                return res["downloadUrl"]
+
+    @classmethod
     async def receive_notification(cls):
         async with aiohttp.ClientSession() as session:
             url = f"{cls.api_url}/waInstance{cls.id_instance}/receiveNotification/{cls.api_token_instance}"
             async with session.get(url) as response:
                 if response.status != 200: raise
                 res =  await response.json()
-                logging.debug(res)
+                logging.debug(f"Notification received: {res}")
                 if not res: return None
                 body = res["body"]
                 if body["typeWebhook"] != "incomingMessageReceived":
@@ -34,7 +51,7 @@ class GreenApiService:
             async with session.delete(url) as response:
                 if response.status != 200: raise
                 res =  await response.json()
-                logging.debug(res)
+                logging.debug(f"Notification deleted: {res}")
                 if not res["result"]:
                     raise
 
